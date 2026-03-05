@@ -352,15 +352,85 @@ function fmtDate(d){if(!d)return'';const p=d.split('-');return p[2]+'/'+p[1]+'/'
 async function submitForm(){
   if(!validate()){showToast('err','⚠️ Vui lòng điền đầy đủ thông tin');const f=document.querySelector('.field-error');if(f)f.scrollIntoView({behavior:'smooth',block:'center'});return;}
   const btn=document.getElementById('btnSubmit');btn.disabled=true;btn.querySelector('span').textContent='⏳ Đang gửi...';showToast('sending','⏳ Đang gửi đăng ký...');
-  const data={hoTen:document.getElementById('hoTen').value.trim(),ngaySinh:fmtDate(document.getElementById('ngaySinh').value),gioiTinh:document.querySelector('input[name="gioiTinh"]:checked').value,phuHuynh:document.getElementById('phuHuynh').value.trim(),sdt:document.getElementById('sdt').value.trim(),hlv:document.getElementById('hlv').value,trangThai:document.getElementById('trangThai').value,coSo:document.getElementById('coSo').value.trim(),bangDau:document.getElementById('bangDau').value,lePhi:document.querySelector('input[name="lePhi"]:checked').value,zalo:document.querySelector('input[name="zalo"]:checked').value,giaiDau:TOURNAMENT_NAME,thoiGian:new Date().toLocaleString('vi-VN')};
-  if(!GOOGLE_SCRIPT_URL){console.log('📋 Dữ liệu:',data);showToast('ok','✅ Đăng ký thành công! (Demo)');document.getElementById('formArea').classList.add('hidden');document.getElementById('successArea').classList.remove('hidden');window.scrollTo({top:0,behavior:'smooth'});btn.disabled=false;btn.querySelector('span').textContent='♞  GỬI ĐĂNG KÝ THI ĐẤU';return;}
-  try{await fetch(GOOGLE_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});showToast('ok','✅ Đăng ký thành công!');document.getElementById('formArea').classList.add('hidden');document.getElementById('successArea').classList.remove('hidden');window.scrollTo({top:0,behavior:'smooth'});}catch(e){showToast('err','❌ Gửi thất bại. Thử lại.');console.error(e);}finally{btn.disabled=false;btn.querySelector('span').textContent='♞  GỬI ĐĂNG KÝ THI ĐẤU';}
+  
+  const data = {
+    hoTen: document.getElementById('hoTen').value.trim(),
+    ngaySinh: fmtDate(document.getElementById('ngaySinh').value),
+    gioiTinh: document.querySelector('input[name="gioiTinh"]:checked')?.value || '',
+    phuHuynh: document.getElementById('phuHuynh').value.trim(),
+    sdt: document.getElementById('sdt').value.trim(),
+    hlv: document.getElementById('hlv').value,
+    trangThai: document.getElementById('trangThai').value,
+    coSo: document.getElementById('coSo').value.trim(),
+    bangDau: document.getElementById('bangDau').value,
+    lePhi: document.querySelector('input[name="lePhi"]:checked')?.value || '',
+    zalo: document.querySelector('input[name="zalo"]:checked')?.value || '',
+    giaiDau: TOURNAMENT_NAME,
+    thoiGian: new Date().toLocaleString('vi-VN')
+  };
+
+  if(!GOOGLE_SCRIPT_URL){
+    console.log('📋 Dữ liệu:', data);
+    showToast('ok','✅ Đăng ký thành công! (Demo)');
+    document.getElementById('formArea').classList.add('hidden');
+    document.getElementById('successArea').classList.remove('hidden');
+    window.scrollTo({top:0,behavior:'smooth'});
+    btn.disabled=false;
+    btn.querySelector('span').textContent='♞  GỬI ĐĂNG KÝ THI ĐẤU';
+    return;
+  }
+
+  try {
+    await fetch(GOOGLE_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      redirect: 'follow',
+      headers: {
+        'Content-Type': 'text/plain;charset=utf-8'  // ← Sửa ở đây để tránh CORS preflight
+      },
+      body: JSON.stringify(data)
+    });
+
+    showToast('ok','✅ Đăng ký thành công!');
+    document.getElementById('formArea').classList.add('hidden');
+    document.getElementById('successArea').classList.remove('hidden');
+    window.scrollTo({top:0,behavior:'smooth'});
+  } catch(e) {
+    showToast('err','❌ Gửi thất bại. Vui lòng thử lại.');
+    console.error('Lỗi gửi form:', e);
+  } finally {
+    btn.disabled = false;
+    btn.querySelector('span').textContent = '♞  GỬI ĐĂNG KÝ THI ĐẤU';
+  }
 }
 
-function resetForm(){document.getElementById('formArea').classList.remove('hidden');document.getElementById('successArea').classList.add('hidden');document.querySelectorAll('input[type="text"],input[type="tel"],input[type="date"]').forEach(e=>e.value='');document.querySelectorAll('select').forEach(e=>e.selectedIndex=0);document.querySelectorAll('input[type="radio"]').forEach(e=>e.checked=false);document.querySelectorAll('.field-error').forEach(e=>e.classList.remove('field-error'));document.querySelectorAll('.error-msg').forEach(e=>e.style.display='none');window.scrollTo({top:0,behavior:'smooth'});}
+function resetForm(){
+  document.getElementById('formArea').classList.remove('hidden');
+  document.getElementById('successArea').classList.add('hidden');
+  document.querySelectorAll('input[type="text"],input[type="tel"],input[type="date"]').forEach(e=>e.value='');
+  document.querySelectorAll('select').forEach(e=>e.selectedIndex=0);
+  document.querySelectorAll('input[type="radio"]').forEach(e=>e.checked=false);
+  document.querySelectorAll('.field-error').forEach(e=>e.classList.remove('field-error'));
+  document.querySelectorAll('.error-msg').forEach(e=>e.style.display='none');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
 
-document.querySelectorAll('input,select').forEach(el=>{const c=()=>{el.classList.remove('field-error');const e=el.closest('.field')?.querySelector('.error-msg');if(e)e.style.display='none';};el.addEventListener('input',c);el.addEventListener('change',c);});
-document.querySelectorAll('input[type="radio"]').forEach(el=>{el.addEventListener('change',()=>{const e=el.closest('.field')?.querySelector('.error-msg');if(e)e.style.display='none';});});
+document.querySelectorAll('input,select').forEach(el=>{
+  const c=()=>{
+    el.classList.remove('field-error');
+    const e=el.closest('.field')?.querySelector('.error-msg');
+    if(e) e.style.display='none';
+  };
+  el.addEventListener('input',c);
+  el.addEventListener('change',c);
+});
+
+document.querySelectorAll('input[type="radio"]').forEach(el=>{
+  el.addEventListener('change',()=>{
+    const e=el.closest('.field')?.querySelector('.error-msg');
+    if(e) e.style.display='none';
+  });
+});
 </script>
 </body>
 </html>
