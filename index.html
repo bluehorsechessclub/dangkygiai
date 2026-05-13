@@ -137,8 +137,8 @@ body{font-family:var(--font);background:var(--cream);color:var(--text);min-heigh
     </div>
     <div class="hero-divider"></div>
     <div class="tournament-badge"><span>📋 Đăng ký thi đấu</span></div>
-    <h2 id="tournamentTitle">GIẢI CỜ VUA <br><em>TRANH CÚP KIỆN TƯỚNG TƯƠNG LAI LẦN I - NĂM 2026</em></h2>
-    <div class="hero-date" id="tournamentDate">Ngày thi đấu: 29 / 03 / 2026</div>
+    <h2 id="tournamentTitle">GIẢI VÔ ĐỊCH CỜ VUA <br><em>MIỀN BẮC LẦN THỨ X NĂM 2026</em></h2>
+    <div class="hero-date" id="tournamentDate">Ngày thi đấu: 05 / 06 / 2026</div>
   </div>
 </div>
 
@@ -209,6 +209,7 @@ body{font-family:var(--font);background:var(--cream);color:var(--text);min-heigh
           <option>Nguyễn Quang Hưng</option>
           <option>Hà Thị Phương Lan</option>
           <option>Vũ Hoài Anh</option>
+          <option>Tự do</option> 
         </select>
         <div class="error-msg" id="err-hlv">Vui lòng chọn Huấn luyện viên</div>
       </div>
@@ -298,27 +299,27 @@ body{font-family:var(--font);background:var(--cream);color:var(--text);min-heigh
    ================================================================ */
 
 // ★ 1. TÊN GIẢI — Sửa tên và ngày thi đấu
-const TOURNAMENT_NAME = "GIẢI CỜ VUA TRANH CÚP KIỆN TƯỚNG TƯƠNG LAI LẦN I - NĂM 2026";
-const TOURNAMENT_DATE = "Ngày thi đấu: 29 / 03 / 2026";
+const TOURNAMENT_NAME = "GIẢI VÔ ĐỊCH CỜ VUA MIỀN BẮC LẦN THỨ X NĂM 2026";
+const TOURNAMENT_DATE = "Ngày thi đấu: 05 / 06 / 2026";
 
 // ★ 2. DANH SÁCH BẢNG ĐẤU — Thêm/bớt/sửa thoải mái
 const BANG_DAU = [
-  "U05 (Sinh năm 2021)",
   "U06 (Sinh năm 2020)",
   "U07 (Sinh năm 2019)",
   "U08 (Sinh năm 2018)",
   "U09 (Sinh năm 2017)",
-  "U10 (Sinh năm 2016)",
-  "U11 (Sinh năm 2015)",
-  "U13 (Sinh năm 2014, 2013)",
-  "Mở rộng (Sinh từ 2012 trở lên)",
+  "U11 (Sinh năm 2015, 2016)",
+  "U13 (Sinh năm 2013, 2014)",
+  "U15 (Sinh năm 2011, 2012)",
+  "U17 (Sinh năm 2009, 2010)",
+  "Bảng vô địch (Không hạn chế độ tuổi)",
 ];
 
 // ★ 3. LINK GOOGLE SHEETS — Dán link Google Apps Script URL vào đây
 const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw26c6F4xsLVI71XwEj_dmgMjeN-B69UHGvPU_OEJiPSOk4EiR82tLbxo69zoKkW_Bipw/exec";
 
 // ★ 4. ĐÓNG/MỞ FORM — true = mở nhận đăng ký, false = đóng form
-const FORM_OPEN = false;
+const FORM_OPEN = true;
 const FORM_CLOSED_MESSAGE = "Đã hết hạn đăng ký. Vui lòng liên hệ Hotline 0354 242 349 nếu cần hỗ trợ.";
 
 /* ================================================================
